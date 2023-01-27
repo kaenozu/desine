@@ -3,8 +3,9 @@ package Iterator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookShelf implements Aggregate {
+public class BookShelf implements Iterator {
     private List<Book> books;
+    private int index;
 
     public BookShelf() {
         this.books = new ArrayList<>();
@@ -23,6 +24,18 @@ public class BookShelf implements Aggregate {
     }
 
     public Iterator iterator() {
-        return new BookShelfIterator(this);
+        return this;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return index < this.getLength();
+    }
+
+    @Override
+    public Object next() {
+        Book book = this.getBookAt(index);
+        index++;
+        return book;
     }
 }
