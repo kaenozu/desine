@@ -5,6 +5,4 @@ public interface Iterator {
 
     public Object next();
 
-    public Iterator iterator();
-
 }
