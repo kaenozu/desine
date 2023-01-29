@@ -1,4 +1,4 @@
-package Adapter.transfer;
+package Adapter;
 
 public class Bannar {
 

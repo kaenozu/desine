@@ -1,6 +1,6 @@
-package Adapter.transfer;
+package Adapter;
 
-public class PrintBanner extends Print {
+public class PrintBanner implements Print {
 
     private Bannar bannar;
 

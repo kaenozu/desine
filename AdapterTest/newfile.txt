@@ -1,0 +1,5 @@
+#written by FileProperties
+#Sun Jan 29 18:15:27 GMT+09:00 2023
+day=2 1
+month=4
+year=2004
