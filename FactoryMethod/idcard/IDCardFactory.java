@@ -9,6 +9,7 @@ import FactoryMethod.framework.Product;
 public class IDCardFactory extends Factory {
 
     List<String> owners = new ArrayList<>();
+    int index;
 
     @Override
     protected void registerProduct(Product p) {
@@ -17,7 +18,8 @@ public class IDCardFactory extends Factory {
 
     @Override
     protected Product createProduct(String owner) {
-        return new IDCard(owner);
+        index++;
+        return new IDCard(owner, index);
     }
 
 }
