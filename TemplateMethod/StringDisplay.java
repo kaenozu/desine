@@ -2,12 +2,12 @@ package TemplateMethod;
 
 public class StringDisplay extends AbstractDisplay {
 
-    private String string;
-    private int width;
+    private final String string;
+    private final int width;
 
     public StringDisplay(String string) {
         this.string = string;
-        this.width = string.getBytes().length;
+        this.width = string.codePointCount(0, string.length());
     }
 
     @Override
@@ -32,5 +32,4 @@ public class StringDisplay extends AbstractDisplay {
         }
         System.out.println("+");
     }
-
 }

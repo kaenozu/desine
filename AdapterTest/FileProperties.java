@@ -1,29 +1,45 @@
 package AdapterTest;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Properties;
 
 public class FileProperties implements FileIo {
 
-    Properties prop;
+    private final Properties prop;
+    private final Path baseDirectory;
 
-    public FileProperties() {
+    public FileProperties(Path baseDirectory) {
         this.prop = new Properties();
+        this.baseDirectory = baseDirectory.toAbsolutePath().normalize();
     }
 
     @Override
     public void readFromeFile(String filename) throws IOException {
-        prop.load(new InputStreamReader(
-                new FileInputStream(System.getProperty("user.dir") + "/AdapterTest/" + filename)));
+        Path path = baseDirectory.resolve(filename).normalize();
+        ensureInsideBaseDirectory(path);
+        try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
+            prop.load(reader);
+        }
     }
 
     @Override
     public void writeToFile(String filename) throws IOException {
-        prop.store(new FileOutputStream(System.getProperty("user.dir") + "/AdapterTest/" + filename, false),
-                "written by FileProperties");
+        Path path = baseDirectory.resolve(filename).normalize();
+        ensureInsideBaseDirectory(path);
+        try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
+            prop.store(writer, "written by FileProperties");
+        }
+    }
+
+    private void ensureInsideBaseDirectory(Path path) throws IOException {
+        if (!path.startsWith(baseDirectory)) {
+            throw new IOException("File must stay inside base directory: " + path);
+        }
     }
 
     @Override
@@ -33,8 +49,6 @@ public class FileProperties implements FileIo {
 
     @Override
     public String getValue(String key) {
-
-        return (String) prop.get(key);
+        return prop.getProperty(key);
     }
-
 }
